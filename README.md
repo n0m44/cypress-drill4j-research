@@ -1,9 +1,10 @@
 # cypress-drill4j-research
-
+---
 Небольшое приложение, для исследования возможностей drill4j.
-Backend: java
-Fronend: Typescript/React
-Database: H2
+
+- **Backend**: java
+- **Fronend**: Typescript/React
+- **Database**: H2
 
 Приложение позволяющее:
 
