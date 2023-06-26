@@ -1,0 +1,163 @@
+openapi: 3.1.0
+info:
+  title: Resulting Open API file
+  description: Merged files from Studio and web-ui-module
+  version: 1.0-SNAPSHOT
+servers:
+  - url: ..
+    description: Test server
+paths:
+  /auth/login:
+    post:
+      summary: Метод для входа пользователя в систему
+      description: Принимает на вход учётные данные пользователя, на выходе возвращает id сессии пользователя
+      operationId: login
+      requestBody:
+        description: Учётные данные пользователя
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CredentialsDto"
+      responses:
+        200:
+          description: Id сессии пользователя
+          content:
+            application/json:
+              schema:
+                type: string
+                format: string
+        403: #Ошибка аутентификации
+          description: Ошибка аутентификации
+        default:
+          description: Ошибка
+  /user:
+    get:
+      summary: Метод для получения списка пользователей
+      description: Возвращает список пользователей в системе
+      operationId: getUsers
+      responses:
+        200:
+          description: List userss
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/UserDto"
+        default: # Ошибка
+          description: Ошибка
+  /user/{id}:
+    get:
+      summary: Метод для получения пользователя
+      description: Возвращает пользователя в системе
+      operationId: getUser
+      parameters:
+        - in: path
+          name: id
+          description: Идентификатор пользователя
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: User
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserDto"
+        default: # Ошибка
+          description: Ошибка
+    post:
+      summary: Method for create user
+      description: Method for create user
+      operationId: createUser
+      parameters:
+        - in: path
+          name: id
+          description: Идентификатор пользователя
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: User data
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserDto"
+      responses:
+        200:
+          description: User
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserDto"
+        default: # Ошибка
+          description: Ошибка
+    put:
+      summary: Method for update user
+      description: Method for update user
+      operationId: updateUser
+      parameters:
+        - in: path
+          name: id
+          description: Идентификатор пользователя
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: User data
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserDto"
+      responses:
+        200:
+          description: User
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserDto"
+        default: # Ошибка
+          description: Ошибка
+    delete:
+      summary: Method for delete user
+      description: Method for delete user
+      operationId: deleteUser
+      parameters:
+        - in: path
+          name: id
+          description: User ID
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: User successfully deleted
+        default: # Ошибка
+          description: Error
+components:
+  schemas:
+    CredentialsDto:
+      description: DTO сущности 'Пароль'
+      type: object
+      properties:
+        login:
+          type: string
+        password:
+          type: String
+          format: password
+          description: Пароль
+      required:
+        - login
+        - password
+
+    UserDto:
+      description: DTO сущности 'Пользователь'
+      type: object
+      properties:
+        id:
+          type: integer
+          description: User ID
+        name:
+          type: string
+          description: Имя пользователя
