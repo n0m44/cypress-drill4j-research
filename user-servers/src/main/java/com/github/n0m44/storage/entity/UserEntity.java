@@ -1,44 +1,50 @@
 package com.github.n0m44.storage.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.util.Objects;
 
 @Entity
+@Table(name = "USERS")
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
+    @Column(name = "USERNAME")
+    private String username;
+    @Column(name = "PASSWORD")
     private String password;
+    private boolean enabled;
 
     protected UserEntity() {}
 
-    public UserEntity(String name, String password) {
-        this.name = name;
+    public UserEntity(String username, String password, boolean enabled) {
+        this.username = username;
         this.password = password;
+        this.enabled = enabled;
     }
 
     public Long getId() {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
     public String getPassword() {
         return password;
     }
 
+    public boolean getEnabled() {
+        return enabled;
+    }
+
     @Override
     public String toString() {
         return "UserEntity{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", name='" + username + '\'' +
                 '}';
     }
 

@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.0.0
 info:
   title: Resulting Open API file
   description: Merged files from Studio and web-ui-module
@@ -46,6 +46,25 @@ paths:
                   $ref: "#/components/schemas/UserDto"
         default: # Ошибка
           description: Ошибка
+    post:
+      summary: Method for create user
+      description: Method for create user
+      operationId: createUser
+      requestBody:
+        description: User data
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserDto"
+      responses:
+        200:
+          description: User
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserDto"
+        default: # Ошибка
+          description: Ошибка
   /user/{id}:
     get:
       summary: Метод для получения пользователя
@@ -58,32 +77,6 @@ paths:
           required: true
           schema:
             type: integer
-      responses:
-        200:
-          description: User
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UserDto"
-        default: # Ошибка
-          description: Ошибка
-    post:
-      summary: Method for create user
-      description: Method for create user
-      operationId: createUser
-      parameters:
-        - in: path
-          name: id
-          description: Идентификатор пользователя
-          required: true
-          schema:
-            type: integer
-      requestBody:
-        description: User data
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UserDto"
       responses:
         200:
           description: User
@@ -135,6 +128,7 @@ paths:
           description: User successfully deleted
         default: # Ошибка
           description: Error
+
 components:
   schemas:
     CredentialsDto:
@@ -144,7 +138,7 @@ components:
         login:
           type: string
         password:
-          type: String
+          type: string
           format: password
           description: Пароль
       required:
