@@ -7,6 +7,22 @@ servers:
   - url: ..
     description: Test server
 paths:
+  /auth/registration:
+    post:
+      summary: Метод для регистрации пользователя
+      description: Принимает на вход учётные данные пользователя, на выходе возвращает id сессии пользователя
+      operationId: registration
+      requestBody:
+        description: Учётные данные пользователя
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CredentialsDto"
+      responses:
+        200:
+          description: Пользователь успешно зарегистрирован
+        409:
+          description: Пользователь с таким логином уже существует
   /auth/login:
     post:
       summary: Метод для входа пользователя в систему
@@ -26,7 +42,7 @@ paths:
               schema:
                 type: string
                 format: string
-        403: #Ошибка аутентификации
+        401: #Ошибка аутентификации
           description: Ошибка аутентификации
         default:
           description: Ошибка
@@ -55,7 +71,26 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UserDto"
+              $ref: "#/components/schemas/UserWithPasswordDto"
+      responses:
+        200:
+          description: User
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserDto"
+        default: # Ошибка
+          description: Ошибка
+    put:
+      summary: Method for update user
+      description: Method for update user
+      operationId: updateUser
+      requestBody:
+        description: User data
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserWithPasswordDto"
       responses:
         200:
           description: User
@@ -77,32 +112,7 @@ paths:
           required: true
           schema:
             type: integer
-      responses:
-        200:
-          description: User
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UserDto"
-        default: # Ошибка
-          description: Ошибка
-    put:
-      summary: Method for update user
-      description: Method for update user
-      operationId: updateUser
-      parameters:
-        - in: path
-          name: id
-          description: Идентификатор пользователя
-          required: true
-          schema:
-            type: integer
-      requestBody:
-        description: User data
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UserDto"
+            format: int64
       responses:
         200:
           description: User
@@ -123,6 +133,7 @@ paths:
           required: true
           schema:
             type: integer
+            format: int64
       responses:
         200:
           description: User successfully deleted
@@ -151,7 +162,19 @@ components:
       properties:
         id:
           type: integer
+          format: int64
           description: User ID
+        login:
+          type: string
+          description: Логин пользователя
         name:
           type: string
           description: Имя пользователя
+        surname:
+          type: string
+          description: Фамилия пользователя
+
+    UserWithPasswordDto:
+      allOf:
+        - $ref: '#/components/schemas/UserDto'
+        - $ref: '#/components/schemas/CredentialsDto'

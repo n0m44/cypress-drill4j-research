@@ -5,46 +5,80 @@ import jakarta.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "USERS")
+@Table(name = "users")
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "USERNAME")
-    private String username;
-    @Column(name = "PASSWORD")
+    @Column(name = "login", nullable = false, unique = true)
+    private String login;
+    @Column(name = "name")
+    private String name;
+    @Column(name = "surname")
+    private String surname;
+    @Column(name = "password", nullable = false)
     private String password;
-    private boolean enabled;
 
     protected UserEntity() {}
-
-    public UserEntity(String username, String password, boolean enabled) {
-        this.username = username;
+    public UserEntity(String login, String name, String surname, String password) {
+        this.login = login;
+        this.name = name;
+        this.surname = surname;
         this.password = password;
-        this.enabled = enabled;
     }
 
     public Long getId() {
         return id;
     }
 
-    public String getUsername() {
-        return username;
+    public UserEntity setId(Long id) {
+        this.id = id;
+        return this;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public UserEntity setLogin(String login) {
+        this.login = login;
+        return this;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public UserEntity setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public UserEntity setSurname(String surname) {
+        this.surname = surname;
+        return this;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public boolean getEnabled() {
-        return enabled;
+    public UserEntity setPassword(String password) {
+        this.password = password;
+        return this;
     }
 
     @Override
     public String toString() {
         return "UserEntity{" +
                 "id=" + id +
-                ", name='" + username + '\'' +
+                ", login='" + login + '\'' +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
                 '}';
     }
 
