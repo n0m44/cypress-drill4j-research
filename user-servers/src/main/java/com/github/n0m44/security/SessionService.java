@@ -42,4 +42,8 @@ public class SessionService {
         SESSION_STORAGE.put(sessionId, newUserToken);
         return Optional.of(userToken.login());
     }
+
+    public static void removeUserSessions(String userLogin) {
+        SESSION_STORAGE.values().removeIf(userToken -> userToken.login().equals(userLogin));
+    }
 }

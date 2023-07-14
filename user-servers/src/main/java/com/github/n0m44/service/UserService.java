@@ -1,9 +1,9 @@
 package com.github.n0m44.service;
 
 import com.github.n0m44.UserMapper;
+import com.github.n0m44.security.SessionService;
 import com.github.n0m44.storage.entity.UserEntity;
 import com.github.n0m44.storage.repository.UserRepository;
-import org.hibernate.annotations.NotFound;
 import org.openapitools.model.CredentialsDto;
 import org.openapitools.model.UserDto;
 import org.openapitools.model.UserWithPasswordDto;
@@ -79,6 +79,8 @@ public class UserService implements UserDetailsService {
         userEntity.setName(userDto.getName());
         userEntity.setSurname(userDto.getSurname());
         userEntity.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        // удаляем сессии пользователя
+        SessionService.removeUserSessions(userEntity.getLogin());
         userRepository.save(userEntity);
         return UserMapper.toUserDto(userEntity);
     }
@@ -95,6 +97,8 @@ public class UserService implements UserDetailsService {
     }
 
     public void deleteUser(Long id) {
+        final Optional<UserEntity> userById = userRepository.findById(id);
+        userById.ifPresent(u -> SessionService.removeUserSessions(u.getLogin()));
         userRepository.deleteById(id);
     }
 }
