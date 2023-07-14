@@ -89,6 +89,7 @@ public class UserService implements UserDetailsService {
     public UserDto createUser(UserWithPasswordDto userDto) throws UserAlreadyExistsException {
         try {
             final UserEntity userEntity = UserMapper.toUserEntity(userDto);
+            userEntity.setPassword(passwordEncoder.encode(userDto.getPassword()));
             userEntity.setId(null);
             final UserEntity newUser = userRepository.save(userEntity);
             return UserMapper.toUserDto(newUser);
