@@ -75,12 +75,13 @@ public class UserService implements UserDetailsService {
     public UserDto updateUser(UserWithPasswordDto userDto) throws UserNotFoundException {
         final UserEntity userEntity = userRepository.findById(userDto.getId())
                 .orElseThrow(() -> new UserNotFoundException("User not found by id " + userDto.getId()));
+        final String oldLogin = userEntity.getLogin();
         userEntity.setLogin(userDto.getLogin());
         userEntity.setName(userDto.getName());
         userEntity.setSurname(userDto.getSurname());
         userEntity.setPassword(passwordEncoder.encode(userDto.getPassword()));
         // удаляем сессии пользователя
-        SessionService.removeUserSessions(userEntity.getLogin());
+        SessionService.removeUserSessions(oldLogin);
         userRepository.save(userEntity);
         return UserMapper.toUserDto(userEntity);
     }
