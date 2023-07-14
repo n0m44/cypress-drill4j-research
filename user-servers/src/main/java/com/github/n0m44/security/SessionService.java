@@ -36,7 +36,7 @@ public class SessionService {
             return Optional.empty();
         }
         final UserToken userToken = SESSION_STORAGE.get(sessionId);
-        if (userToken == null)
+        if (userToken == null || LocalDateTime.now().isAfter(userToken.timeExpiration()))
             return Optional.empty();
         final UserToken newUserToken = new UserToken(userToken.login(), LocalDateTime.now().plus(5, ChronoUnit.MINUTES));
         SESSION_STORAGE.put(sessionId, newUserToken);
