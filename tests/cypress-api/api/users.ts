@@ -1,4 +1,4 @@
-import { usersListEndpoint } from './endpoints';
+import { usersListEndpoint } from './endpoints/endpoints';
 
 export default class UserRequests {
   static usersList = () => {
